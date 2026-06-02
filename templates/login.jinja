@@ -1,0 +1,70 @@
+{% extends "alap.jinja" %}
+
+{% block head_elements %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}"/>
+    <script src="{{ url_for('static',filename='scripts/login_profil.js') }}" defer></script>
+{% endblock head_elements %}
+
+{% block body_content %}
+    <main>
+        <h2>
+            euro24 | tippjáték
+        </h2>
+
+        <div id="fo-panel">
+            <form method="POST" id="login-form" class="aktiv">
+                <h2>Belépés</h2>
+                <div class="inputok">
+                    <div class="input-container">
+                        <input name="email" type="email" maxlength="90" 
+                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                            required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-container">
+                        <input name="password"  type="password" value="" maxlength="90" required>
+                        <label for="password">Jelszó</label>
+                    </div>
+                </div>
+                <button class="gomb" name="submit" type="submit">Belépés</button>
+            </form>
+
+            <form method="POST" id="signup-form">
+                <h2>Jelentkezés</h2>
+                <div class="inputok">
+                    <div class="input-container">
+                        <input name="email" type="email" maxlength="90" 
+                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                            required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-container">
+                        <input name="username" type="text" maxlength="90" required>
+                        <label for="username">Név</label>
+                    </div>
+                </div>
+                <button class="gomb" name="submit" type="submit">Jelentkezés</button>
+            </form>
+            <div id="fedlap">
+                <div class="content for-signin">
+                    <h2>Üdv újra!</h2>
+                    <p>Írja be felhasználónevét és jelszavát a bejelentkezéshez!</p>
+                    <div class="change-form">
+                        <span>Nincs még fiókja?</span><br>
+                        <button class="switch-gomb" onclick="switchForm()">Jelentkezés</button>
+                    </div>
+                </div>
+                <div class="content for-signup">
+                    <h2>Játszon Ön is!</h2>
+                    <p>Miután megadta adatait, az adminisztrátor létrehoz Önnek egy fiókot.
+                    Erről e-mailen kap tájékoztatást.</p>
+                    <div class="change-form">
+                        <span>Van már fiókja?</span><br>
+                        <button class="switch-gomb" onclick="switchForm()">Bejelentkezés</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock body_content %}

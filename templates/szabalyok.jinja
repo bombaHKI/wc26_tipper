@@ -1,0 +1,114 @@
+{% extends "alap_header.jinja" %}
+{% set current_page = 'Szabályok' -%}
+
+{% block head_elements %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles/szabalyok.css') }}"/>
+	<script src="{{ url_for('static',filename='scripts/szabalyok.js') }}" defer></script>
+{% endblock head_elements %}
+
+{% block main_content %}
+<main>
+	<section id="szabalyok">
+		<h2>SZABÁLYOK</h2>
+
+		<section>
+			<h3 class="accordion-cim" onclick="openClose(this)">
+				Tippelés
+				<svg viewbox="0 0 100 100" height="1rem">
+					<line x1="10" x2="57" y1="30" y2="77" stroke-width="20"/>
+					<line x1="43" x2="90" y1="77" y2="30" stroke-width="20"/>
+				</svg>
+			</h3>
+			<p class="accordion-content">
+				Összesen 51 meccs lesz.<br>
+				A <a href="{{url_for('meccsek')}}">Meccsek</a> oldalon találja a már lejátszott és a már ismert 
+				párosítások információit. A lejátszott és éppen zajló meccsekre
+				tippelni már nem lehet.
+				<br>Ha valamilyen akadályba ütközött volna, vagy észrevétele, javaslata van, küldje el az
+				<a id="email" href="mailto:euro24tipp@gmail.com">euro24tipp@gmail.com</a>
+				e-mail címre.
+				<br>A kieséses szakaszban 90 percnyi játékidőre kell tippelni.
+			</p>
+		</section>
+			
+		<section>
+			<h3 class="accordion-cim" onclick="openClose(this)">
+				Pontozás
+				<svg viewbox="0 0 100 100" height="1rem">
+					<line x1="10" x2="57" y1="30" y2="77" stroke-width="20"/>
+					<line x1="43" x2="90" y1="77" y2="30" stroke-width="20"/>
+				</svg>
+			</h3>
+			<div class="accordion-content">
+				<section>
+					<h4>Odds</h4>
+					<p>
+						A meccsek fölött látható a végkimenetelekre adott odds, perjelekkel elválasztva.
+						Például: <b>5/3/2</b> azt jelenti, hogy ha az első csapat nyer és eltalálta,
+						5 pontot kap, ha eltalálta a döntetlent 3 pontot kap és ha
+						eltalálta, hogy a második
+						csapat nyer, 2 pontot kap.
+						<br>Ezek a pontszámok/odds-ok reflektálják a csapatok erősségeit. Erősebb csapatra 
+						kisebb odds van. 
+					</p>
+					<p>
+						Ha a meccs végkimenetelét eltalálta, további pontokat gyűjthet.
+					</p>
+				</section>
+				<section>
+					<h4>Plusz pontok</h4>
+					<ul>
+						<li>Pontos végeredményt eltalálta:</li>
+						<ul>
+							<li>1-0, 2-0, 1-1, 2-1 tippek esetén: +3 pont.</li>
+							<li>0-0, 3-0, 3-1, 2-2 tippek esetén: +5 pont.</li>
+							<li>Más esetben: +7 pont.</li>
+						</ul>
+						<li>Nem találta el a pontos végeredményt:</li>
+						<ul>
+							<li>
+								A meccs döntetlen és csak egy-egy gól híján nem találta el a
+								pontos végeredményt: +1 pont.
+							</li>
+							<li>
+								A meccs nem döntetlen és eltalálta az egyik csapat gólszámát, vagy a gólkülönbséget: +1 pont.
+							</li>
+						</ul>
+					</ul>
+				</section>
+			</div>
+		</section>
+
+
+		<section>
+			<h3 class="accordion-cim" onclick="openClose(this)">
+				Táblázat
+				<svg viewbox="0 0 100 100" height="1rem">
+					<line x1="10" x2="57" y1="30" y2="77" stroke-width="20"/>
+					<line x1="43" x2="90" y1="77" y2="30" stroke-width="20"/>
+				</svg>
+			</h3>
+			<div class="accordion-content">
+				<p>
+					Az <a href="{{url_for('allas')}}">Állás</a> oldalon találja a gyűjtött pontszámok alapján létrehozott
+					tabellát, ahol lehetőség van megnézni az összes játékos tippjeit a már lezárt
+					meccsekre.
+					<br>Egyenlő ponszám esetén holtverseny van.
+				</p>
+
+				<section>
+					<h4>Követések</h4>
+					<p>
+						Kijelölheti, hogy mely játékosokat kövessen. Ez alapján lehet szűrni
+						a tabellát.
+						<br>A követés egyirányú, akit követ, az erről nem kap értesítést.
+					</p>
+				</section>
+			</div>
+		</section>
+
+		<p id="jo-jatekot">Jó játékot!</p>
+	</section>			
+</main>
+{% endblock main_content %}

@@ -1,0 +1,45 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.gomb {
+    padding: 1em;
+    border-radius: 4px;
+    background-color: var(--message-bg-color);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .5s, filter .2s;
+    filter: grayscale(.5);
+    flex: 1;
+}
+
+.gomb:hover, .gomb:focus-visible {
+    background-color: transparent;
+    color: var(--message-bg-color);
+    box-shadow: 0 0 10px var(--message-bg-color);
+    filter: none;
+}
+
+input {
+    min-width: 6ch;
+    background-color: var(--bg-to);
+}
+.input-container label {
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.odds-inputok {
+    display: flex;
+    row-gap: .5em;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.odds-inputok span {
+    width: 100%;
+    opacity: .8;
+}

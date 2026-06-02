@@ -1,0 +1,104 @@
+/*#region Szabalyok---------------------------------{*/
+main {
+    padding-bottom: 5rem;
+}
+
+#szabalyok {
+    width: min(60ch, 100%);
+    padding: min(.5rem,1%);
+    background-color: var(--blur1);
+    border-radius: 10px;
+    margin: 0 auto;
+    backdrop-filter: blur(3px);
+}
+    
+#szabalyok a {
+    color: var(--main1);
+    text-decoration: underline;
+}
+    
+#szabalyok > section {
+    background: var(--blur1);
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+    
+.accordion-cim {
+    background: linear-gradient(100deg,var(--text3) 20%, var(--main1));
+    border-radius: 5px;
+    cursor: pointer;   
+    padding: 5px;
+    transition: background-position 1s;
+    position: relative;
+    background-size: 200% 100%;
+    background-position: 0 0;
+    color: var()
+}
+.accordion-cim svg {
+    position: absolute;
+    right: 1ch;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.accordion-cim svg line {
+    stroke: var(--main1_2);
+    transition: .3s;
+    transform-origin: 50% 50%;
+}
+.accordion-cim:hover {
+    background-position: 100% 0;
+}
+.accordion-cim:hover line{
+    filter: drop-shadow(0 0 6px var(--bg-to));
+}
+.accordion-content {
+    opacity: 0;
+    max-height: 0;
+    transition: max-height .3s,
+        opacity .1s,
+        padding .1s .2s;
+    overflow: hidden;
+}
+.open line:first-child {
+    rotate: 180deg;
+}
+.open line:last-child {
+    rotate: -180deg;
+}
+.open .accordion-content {
+    opacity: 1;
+    transition: max-height .2s,
+        opacity .2s;
+    padding: 5px;
+}
+
+#szabalyok section section {
+    border-radius: 3px;
+    padding: 1ch;
+    outline: 1px solid var(--text1);
+    margin-bottom: 1ch;
+    margin-top: 1ch;
+}
+
+#szabalyok #jo-jatekot,
+#szabalyok h2 {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    padding: .5rem;
+    margin: 0;
+}
+
+#szabalyok h4 {
+    padding-left: 1ch;
+}
+
+#szabalyok ul > ul {
+    padding-left: 1rem;
+}
+#szabalyok li {
+    list-style-position: inside;
+    margin-top: .3rem;
+}
+/*#endregion}*/
+    

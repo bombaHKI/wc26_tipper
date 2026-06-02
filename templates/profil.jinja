@@ -1,0 +1,75 @@
+{% extends "alap_header.jinja" %}
+{% set current_page = 'Profil' -%}
+
+{% block head_elements %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}"/>
+    <script src="{{ url_for('static',filename='scripts/login_profil.js') }}" defer></script>
+{% endblock head_elements %}
+
+{% block main_content %}
+    <main>
+        <h2>Profil adatok</h2>
+        <div id="fo-panel" class="locked">
+            
+            <form method="POST" id="data-change-form" class="aktiv">
+                <h2>Profil adatok</h2>
+                <div class="inputok">
+                    <div class="input-container">
+                        <input class="non-empty" name="username" type="text" maxlength="90" value="{{current_user.name}}" required>
+                        <label for="username">Felhasználónév</label>
+                    </div>
+                    <div class="input-container">
+                        <input class="non-empty"name="email" type="email" maxlength="90" 
+                            value="{{current_user.email}}" 
+                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                            required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-container">
+                        <input name="password" type="password" maxlength="90" required>
+                        <label for="password">Jelszó</label>
+                    </div>
+                </div>
+                <button class="gomb" name="submit" type="submit">Változtatás</button>
+            </form>
+
+            <form method="POST" id="password-change-form">
+                <h2>Új jelszó</h2>
+                <div class="inputok">
+                    <div class="input-container">
+                        <input name="password" type="password" maxlength="90" required>
+                        <label for="passwor">Jelenlegi jelszó</label>
+                    </div>
+                    <div class="input-container">
+                        <input name="new-password" type="password" maxlength="90" required>
+                        <label for="new-password">Új jelszó</label>
+                    </div>
+                    <div class="input-container">
+                        <input name="confirm-password" type="password" maxlength="90" required>
+                        <label for="confirm-password">Új jelszó megerősítése</label>
+                    </div>
+                </div>
+                <button class="gomb" name="submit" type="submit">Módosítás</button>
+            </form>
+            <div id="fedlap">
+                <div class="content for-signin">
+                    <h2>Módosítás!</h2>
+                    <p>Adatai módosításához írja át azokat, adja meg jelszavát, majd nyomja meg a Változtatás gombot!</p>
+                    <div class="change-form">
+                        <span>Jelszavát szeretné megváltoztatni?</span><br>
+                        <button class="switch-gomb" onclick="switchForm()">Jelszó módosítás</button>
+                    </div>
+                </div>
+                <div class="content for-signup">
+                    <h2>Módosítás!</h2>
+                    <p>Írja be mostani jelszavát, majd adja meg az újat.</p>
+                    <div class="change-form">
+                        <span>Mást változtatna?</span><br>
+                        <button class="switch-gomb" onclick="switchForm()">Adatok módosítása</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock main_content %}

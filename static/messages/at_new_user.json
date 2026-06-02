@@ -1,0 +1,6 @@
+
+{
+    "subject": "Fiókja elkészült az euro24 tippjátékhoz!",
+    "body": "Tisztelt {person.name}!\n\nKöszönjük, hogy jelentkezett az Euro24 tippjátékunkra! Örömmel értesítjük, hogy a fiókja elkészült.\n\nBelépéshez szükséges adatai:\n-Email: {person.email}\n-Jelszó: {password}\n\nJavasoljuk, hogy jelszavát az első belépéskor változtassa meg!\nHa bármilyen kérdése lenne, ne habozzon kapcsolatba lépni velünk ezen az e-mail címen: euro24@gmail.com.\n\nÜdvözlettel:\nA Játékszervezők\nhttps://hkadus.pythonanywhere.com/"
+}
+  

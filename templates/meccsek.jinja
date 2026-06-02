@@ -1,0 +1,71 @@
+{% extends "alap_header.jinja" %}
+{% set current_page = 'Meccsek' -%}
+
+{% block head_elements %}
+    {{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='styles/meccsek.css') }}"/>
+    <script src="{{ url_for('static',filename='scripts/meccsek.js') }}" defer></script>
+{% endblock head_elements %}
+
+{% block main_content %}
+    <main>
+        <form id="meccsek" method="post">
+        {% for match, bet in matches_bets %}
+        {% set closed = match.start_date_utc <= now %}
+            <div class="meccs {{ 'lezarult' if closed }}" data-mid="{{match.match_id}}">
+                <div class="infok">
+                    <time datetime="{{match.start_date_utc.isoformat()}}"></time>
+                    {% if closed %}
+                        <span>Lezárult</span>
+                    {%endif%}
+                    {% if None in (match.odds_H,match.odds_X,match.odds_A) %}                    
+                        <span>Még nincs odds</span>
+                    {% else %}
+                        <span>Odds: {{match.odds_H}}/{{match.odds_X}}/{{match.odds_A}}</span>
+                    {% endif %}
+                </div>
+                <div class="eredmenyjelzo">
+                    <span class="csapat-nev">{{match.team_H.name}}</span>
+                    <img src="{{ match.team_H.name|img_url_from_name }}">
+                    {% if closed %}
+                        {% set no_bet = bet == None %}
+                        <span class="score">{{ '' if no_bet else bet.bet_H }}</span>
+                        <span class="kotojel {{'no-tipp' if no_bet}}">
+                            {{'Nincs tipp' if no_bet else '-'}}
+                        </span>
+                        <span class="score">{{ '' if no_bet else bet.bet_A }}</span>
+                    {% else %}
+                        <input class="score" name="bet_H-{{match.match_id}}" type="number" placeholder="?" min="0" step="1" max="15" value="{{bet.bet_H}}">
+                        <span class="kotojel">-</span>
+                        <input class="score" name="bet_A-{{match.match_id}}" type="number" placeholder="?" min="0" step="1" max="15" value="{{bet.bet_A}}">
+                    {% endif %}
+                    <img src="{{ match.team_A.name|img_url_from_name }}">
+                    <span class="csapat-nev">{{match.team_A.name}}</span>
+                </div>
+                {% if closed %}
+                    <div class="infok">
+                        {% if None in (match.goals_H, match.goals_A) %} 
+                            <span></span>                    
+                            <span>Végeredmény még nem ismert.</span>
+                            <span></span>                    
+                        {% else %}
+                            <span>Végeredmény: {{match.goals_H}} - {{match.goals_A}}</span>
+                            <span>
+                                {% if bet %}
+                                    {{bet.points}}
+                                {% else %}
+                                    0
+                                {% endif %} pont
+                            </span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+            <div id="form-gombok">
+                <button class="form-gomb" name="submit" type="submit">Módosítások mentése</button>
+                <button class="form-gomb" name="reset" type="reset">Visszaállítás</button>
+            </div>
+        </form>
+    </main>
+{% endblock main_content %}

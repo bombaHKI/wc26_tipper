@@ -1,0 +1,47 @@
+{% extends "admin/admin_header.jinja" %}
+{% set current_page = 'Meccsek' -%}
+
+{% block head_elements %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/meccsek.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/admin/add_meccsek.css') }}" />
+<script src="{{ url_for('static',filename='scripts/alap.js') }}" defer></script>
+<script src="{{ url_for('static',filename='scripts/admin/add_meccsek.js') }}" defer></script>
+{% endblock head_elements %}
+
+{% block main_content %}
+<main>
+    <button class="gomb" onclick="updateMatches()">Meccsek frissítése</button>
+
+    <form id="meccsek" method="post">
+    {% for match in coming_matches %}
+        <div class="meccs {{ 'lezarult' if closed }}" data-mid="{{match.match_id}}">
+            <div class="infok">
+                <time datetime="{{match.start_date_utc.isoformat()}}"></time>
+                {% if None in (match.odds_H,match.odds_X,match.odds_A) %}                    
+                    <span>Még nincs odds</span>
+                {% else %}
+                    <span>Odds: {{match.odds_H}}/{{match.odds_X}}/{{match.odds_A}}</span>
+                {% endif %}
+            </div>
+            <div class="eredmenyjelzo">
+                <span class="csapat-nev">{{match.team_H.name}}</span>
+                <img src="{{ match.team_H.name|img_url_from_name }}">
+                <img src="{{ match.team_A.name|img_url_from_name }}">
+                <span class="csapat-nev">{{match.team_A.name}}</span>
+            </div>
+            <div class="odds-inputok">
+            <span>Fogadóiroda oddsok:</span>
+                <input class="score" name="odds_H-{{match.match_id}}" placeholder="H" type="number" min="0" max="50" step="0.01" value="">
+                <input class="score" name="odds_X-{{match.match_id}}" placeholder="X" type="number" min="0" max="50" step="0.01" value="">
+                <input class="score" name="odds_A-{{match.match_id}}" placeholder="A" type="number" min="0" max="50" step="0.01" value="">
+            </div>
+        </div>
+    {% endfor %}
+        <div id="form-gombok">
+            <button class="form-gomb" name="submit" type="submit">Módosítások mentése</button>
+            <button class="form-gomb" name="reset" type="reset">Visszaállítás</button>
+        </div>
+    </form>
+</main>
+{% endblock main_content %}

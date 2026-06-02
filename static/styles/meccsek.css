@@ -1,0 +1,179 @@
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#meccsek {
+    text-align: center;
+    display: grid;
+    gap: 1em;
+    padding-bottom: 5rem;
+    width: min(50ch, 100%);
+    margin: auto;
+}
+
+.meccs {
+    background: linear-gradient(var(--bg-from) 60%, var(--bg-to) 130%);
+    border: 1px solid var(--main1_2);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px var(--blur1);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;    
+    scroll-margin-top: 7rem;
+}
+
+.infok {
+    font-size: .7em;
+    display: flex;
+    align-items: center;
+}
+.infok * {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    opacity: .5;
+    transition: all .2s;
+    text-wrap: nowrap;
+}
+.infok :first-child { justify-content: start;}
+.infok :last-child { justify-content: end;}
+
+.infok *:hover {
+    opacity: 1;
+    font-size: 1.2em;
+}
+
+.eredmenyjelzo {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 
+        minmax(min-content, 1fr) 
+        repeat(3,minmax(min-content,auto))
+        minmax(min-content,1fr);
+    grid-template-areas:
+        "flagH betH - betA flagA"
+        "nameH . . . nameA";
+    gap: .2em;
+    align-items: center;
+    justify-items: center;
+}
+
+.csapat-nev {
+    grid-area: nameH;
+    white-space: nowrap;
+    overflow: clip;
+}
+.csapat-nev:last-of-type {
+    grid-area: nameA;
+}
+
+.eredmenyjelzo img {  
+    grid-area: flagH;
+    height: 2em;
+    border-radius: .3em;
+    box-shadow: 0 0 3px var(--blur4);
+    z-index: 1;
+}
+.eredmenyjelzo img:last-of-type {  
+    grid-area: flagA;
+}
+.kotojel {
+    opacity: .7;
+    font-size: 2em;
+    text-wrap: nowrap;
+}
+.no-tipp {
+    font-size: 1em;
+}
+
+.score {    
+    font-size: 1.5em;
+    max-width: 3ch;
+    padding: .2em;
+}
+
+input {
+    text-align: center;
+    cursor: initial;
+    background-color: unset;
+    border: unset;
+    border-radius: 3px;
+    background-image: linear-gradient(to right,var(--bg-to) -50%,transparent 90%);
+}
+input:invalid {
+    outline: 2px solid var(--main2);
+    background-color: rgba(255, 0, 0, 0.5);
+}
+input:hover:not(:invalid),
+input:focus:not(:invalid) {
+    outline: 1px solid;
+}
+#meccsek input:first-of-type {
+    background-image: linear-gradient(to left,var(--bg-to) -50%,transparent 90%);
+}
+
+.meccs.lezarult {
+    filter: grayscale(.4) brightness(.85);
+    transition: filter .3s;
+}
+.lezarult:hover {
+    filter: unset;
+}
+
+
+#form-gombok {
+    visibility: hidden;
+    z-index: 2;
+    position: fixed;
+    bottom: -4em;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    gap: 4px;
+    grid-template-columns: 1fr 1fr;
+    background-color: unset;
+    outline: unset;
+    transition: bottom .5s, visibility 0s 1s;
+    text-wrap: nowrap;
+    min-width: 34ch;
+}
+#form-gombok.visible {
+    bottom: 1em;
+    visibility: visible;
+    transition: bottom .4s cubic-bezier(.46,.03,.4,1.7), visibility 0s;
+}
+
+.form-gomb {
+    font-size: .8rem;
+    font-weight: bold;
+    padding: .5rem;
+    transition: background-color .2s, box-shadow .5s;
+    background-color: var(--message-bg-color);
+    border-radius: 10px 0 0 10px;
+    backdrop-filter: blur(3px);
+}
+.form-gomb:last-child {
+    background-color: var(--error-bg-color);
+    border-radius: 0 10px 10px 0;
+}
+.form-gomb:hover {
+    background-color: var(--blur1);
+    background-color: color-mix(in srgb, var(--message-bg-color) 20%, transparent);
+    box-shadow: 
+        0 0 20px var(--message-bg-color),
+        0 0 10px var(--message-bg-color),
+        0 0 4px var(--message-bg-color);
+}
+.form-gomb:last-child:hover {        
+    background-color: var(--blur1);
+    background-color: color-mix(in srgb, var(--error-bg-color) 20%, transparent);
+    box-shadow: 0 0 20px var(--error-bg-color), 0 0 6px var(--error-bg-color);
+}
+

@@ -1,0 +1,107 @@
+main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: max(.5em, 5%);
+    align-items: baseline;
+    justify-content: safe center;
+}
+
+.table-container, #letrehoz-form-container {
+    background: linear-gradient(355deg, var(--bg-from) 30%, var(--bg-to) 200%);
+    background-attachment: fixed;
+    box-shadow: 0 4px 10px var(--blur4), 0 0 30px var(--blur2);
+    border-radius: 10px;
+    padding: 1em;
+    width: fit-content;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: .5em;
+}
+
+table {
+    border-collapse: collapse;
+    background-color: var(--blur0_5);
+}
+
+th, td {
+    padding: .5em;
+    border: 1px solid var(--text3);
+    text-align: left;
+}
+
+th {
+    font-weight: normal;
+}
+
+table thead {   
+    font-weight: normal;
+    background-image: linear-gradient(20deg,var(--main1) 10%, var(--main2));
+    color: var(--text2);
+}
+
+table tr:nth-child(even) {
+    background-color: var(--blur0_5);
+}
+
+.gombok {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+
+/* Buttons */
+.gomb {
+    font-size: .8em;
+    padding: 0.4em .6em;
+    border-radius: 4px;
+    background-color: var(--message-bg-color);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .5s, filter .2s;
+    filter: grayscale(.5);
+    flex: 1;
+}
+
+.gomb:hover, .gomb:focus-visible {
+    background-color: transparent;
+    color: var(--message-bg-color);
+    box-shadow: 0 0 10px var(--message-bg-color);
+    filter: none;
+}
+
+.gomb.delete {
+    background-color: var(--error-bg-color);
+}
+.gomb.delete:hover, .gomb.delete:focus-visible {
+    background-color: transparent;
+    color: var(--error-bg-color);
+    box-shadow: 0 0 10px var(--error-bg-color);
+}
+
+#letrehoz-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+/* #region tr remove animation { */
+tr {
+    transition: scale .2s, background-color .8s;
+}
+tr.remove {
+    scale: 0.4 0;
+}
+td {
+    transition: font-size, padding;
+    transition-duration: .1s;
+    transition-delay: .1s;
+}
+tr.remove td{
+    font-size: 0;
+    padding: 0;
+}
+
+/* #endregion tr remove animation }*/

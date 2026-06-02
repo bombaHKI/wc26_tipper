@@ -1,0 +1,387 @@
+:root {
+    --td-mix-color: var(--bg-from);
+}
+
+#main-table {
+    padding-inline: .5rem;
+    gap: 4px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#table-container {
+    position: relative;
+    overflow: scroll;
+    max-height: calc(100vh - 10rem);
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+/*#region scrollbar---------------------------------{*/
+    /* Chrome */
+    #table-container::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    #table-container::-webkit-scrollbar-track,
+    #table-container::-webkit-scrollbar-corner {
+        background-color: color-mix(in srgb, var(--main1_2), transparent);
+    }
+    #table-container::-webkit-scrollbar-thumb {
+        background-color: color-mix(in srgb, var(--main2) 60%, transparent); 
+        border-radius: 5px;
+    }
+
+    #table-container {
+        /* FireFox */
+        scrollbar-color: 
+            color-mix(in srgb, var(--main2) 60%, transparent)
+            color-mix(in srgb, var(--main1_2), transparent);
+        scrollbar-width: thin;
+    }
+/* #endregion } */
+
+
+/*#region gombok---------------------------------{*/
+.content-gomb {
+    fill: var(--text1);
+    height: 2.2rem;
+    width: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: var(--bg-to);
+    transition: background-color .1s, color .1s,
+        box-shadow .2s, text-shadow .2s;
+}
+.content-gomb svg {
+    height: 1em;
+    width: 1em;
+}
+@media(hover: hover) and (pointer: fine) {
+    .content-gomb:hover {
+        fill: var(--main1);
+        background-color: color-mix(in srgb, var(--bg-to), transparent);
+        box-shadow: 0 0 20px var(--main1_2);
+        z-index: 1;
+    }
+}
+.content-gomb.checked {
+    fill: var(--main1);
+    background-color: color-mix(in srgb, var(--bg-to) 20%, transparent);
+    box-shadow: 0 0 10px var(--main1_2);
+}
+
+#allas-gombok {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 5;
+}
+#nav-gombok,
+#tippek-gombok {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+#nav-gombok button:first-child,
+#tippek-gombok button:first-child {
+    border-radius: 25% 25% 0 0;
+}
+#nav-gombok button:last-child,
+#tippek-gombok button:last-child {
+    border-radius: 0 0 25% 25%;
+}
+.content-gomb .info {
+    font-size: .7em;
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    left: 100%;
+    white-space: nowrap;
+    padding: 3px;
+    background-image: linear-gradient(to right, var(--bg-from), var(--bg-to) 130%);
+    border: 1px solid var(--text1);
+    border-radius: 2px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s, visibility .2s, left .2s;
+}
+@media(hover: hover) and (pointer: fine) {
+    .content-gomb:hover .info{
+        opacity: 1;
+        visibility: visible;
+        left: calc(100% + 10px);
+    }
+}
+/* #endregion } */
+
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    z-index: 2;
+    position: sticky;
+    top: 0;
+    background-image: linear-gradient(45deg, var(--main1) 30%, var(--main2));
+    background-attachment: fixed;
+}
+thead th {
+    color: var(--text2);
+    height: 3.7em;
+}
+thead th:not(.col3, .col1, .col2) {
+    transition: background-color .3s;
+    cursor: pointer;
+}
+@media(hover: hover) and (pointer: fine) {
+    thead th:not(.col3, .col1, .col2):hover {
+        background-color: color-mix(in srgb, var(--main2), var(--main1));
+    }
+    thead th:not(.col3, .col1, .col2):hover .eredmeny {
+        scale: 1.15;
+    }
+}
+th img {
+    width: 1.5em;
+    border-radius: .1em;
+    border: 1px solid var(--blur4);
+}
+.eredmeny {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    transition: scale .2s;
+    column-gap: .2em;
+}
+.eredmeny span {
+    grid-column: 1/3;
+    text-align: center;
+}
+
+thead .col1 {
+    background-color: var(--blur2);
+}
+
+thead .col2 {
+    background-color: var(--blur1);
+}
+thead .col3 {
+    background-image: linear-gradient(45deg, var(--main1) 30%, var(--main2));
+    background-attachment: fixed;
+}
+.col1, .col2 {
+    background-color: var(--bg-from);
+}
+.col1 {
+    filter: brightness(.9);
+}
+.col2 {
+    filter: brightness(.95);
+}
+.col3 {
+    z-index: 1;
+    position: sticky;
+    left: 0;
+    overflow: clip;
+    background-color: var(--bg-from);
+}
+tbody .col3:not(#user) {
+    cursor: pointer;
+    overflow-x: clip;
+    overflow-y: visible;
+    transition: background-position 0.2s, box-shadow .1s .2s;
+    background-image: linear-gradient(to left,
+        transparent,
+        var(--main1_2));
+    background-repeat: no-repeat;
+    background-size: 50%, 100%;
+    background-position: -100% 0;
+}
+tbody .col3[data-followed]:not(#user) {
+    transition: background-position 0.2s .2s, box-shadow .1s;
+    box-shadow: inset 2px 0px 3px -1px var(--main1);
+    background-position: 0 0;
+}
+.col3 .content-gomb {
+    position: absolute;
+    height: 100%;
+    left: 100%;
+    top: 0;
+    width: fit-content;
+    padding-inline: 1em;
+    background-image: linear-gradient(to left, transparent, var(--main1));
+    transition: translate .2s ease-in-out,
+        background-color .4s,
+        box-shadow .4s,
+        color .3s;
+
+    display: grid;
+    grid-template-areas: "a";
+    align-items: center;
+}
+.col3 .content-gomb:focus {
+    translate: -100%;
+}
+.col3 .content-gomb svg {
+    fill: var(--main1_2);
+    grid-area: a;
+    transition: fill .2s;
+}
+.col3[data-followed] button .follow,
+.col3:not([data-followed]) button .unfollow {
+    display: none;
+}
+
+.col3 .content-gomb .info {
+    left: unset;
+    right: 1px;
+    translate: unset;
+    top: unset;
+    bottom: 100%;
+    transition: opacity .2s, visibility .2s, bottom .2s;
+}
+@media(hover: hover) and (pointer: fine) {
+    .col3 .content-gomb:hover {
+        box-shadow: 0 0 3px var(--main1), 0 0 10px var(--main1);
+        z-index: 3;
+    }
+    .col3 .content-gomb:hover svg {
+        fill: var(--bg-to);
+    }
+    .col3 .content-gomb:hover .info {
+        bottom: calc(100% + 5px);
+        z-index: 5;
+    }
+}
+
+th {
+    text-align: left;
+    white-space: nowrap;
+    font-weight: unset; 
+    padding: .5em;
+}
+th[rowspan] {
+    vertical-align: top;
+    position: sticky;
+    top: 3.5rem;
+}
+th#user {
+    scroll-margin-top: 8rem; 
+    background-color: color-mix(in srgb, var(--bg-from), var(--main2));
+}
+
+td {
+    white-space: nowrap;
+    text-align: center;
+    position: relative;
+    cursor: grab;
+}
+
+td span {
+    position: absolute;
+    transform: translate(-50%,-50%);
+    transition: transform .2s, scale .2s;
+    pointer-events: none;
+}
+@media(hover: hover) and (pointer: fine) {
+    td:hover span {
+        transform: unset;
+        scale: .8;
+        transition: transform .3s .5s, scale .3s .5s;
+    }
+}
+td::after {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    background-color: var(--blur1);
+    content: attr(data-points) " pont";
+    padding: 1px 2px;
+    margin: 2px;
+    top: 1px;
+    left: 1px;
+    transform: translate(-40%,-40%);
+    transition: all .2s;
+}
+@media(hover: hover) and (pointer: fine) {
+    td:hover::after {
+        opacity: 1;
+        visibility: visible;
+        transform: unset;
+        transition: opacity .2s .5s, transform .3s .5s;
+    }
+}
+
+.animation-visible {
+    transition: background-color .4s var(--transition-delay);
+    animation: bounce2 .5s var(--transition-delay) ease-in-out;
+}
+@keyframes bounce2 {
+    60% { scale: .4; }
+    75% { scale: 1.4; }
+    100% { scale: 1; }
+}
+@media(hover: hover) and (pointer: fine) {
+    tbody:hover th[rowspan],
+    tbody tr:hover .col3 {
+        background-color: var(--bg-to);
+    }
+    tbody tr:hover td {
+        filter: brightness(1.02);
+    }
+}
+
+#point-indicators-table {
+    text-align: center;
+    position: fixed;
+    font-size: .8em;
+    box-shadow: 0 0 3px var(--blur2);
+    top: 100%;
+    z-index: 6;
+    left: 50%;
+    translate: -50% 10%;
+    transition: translate .3s, visibility 0s 1s;
+    visibility: hidden;
+    display: grid;
+    grid-template-columns: repeat(18, 1.6rem);
+    grid-auto-rows: 1.6rem;
+}
+#point-indicators-table.visible {
+    visibility: visible;
+    translate: -50% calc(-.8rem - 100%);
+    transition: translate .5s cubic-bezier(.46,.03,.4,1.7), visibility 0s;
+}
+#point-indicators-table :first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1 / -1;
+    background-image: linear-gradient(
+        45deg,
+        var(--main1_2) 40%, 
+        var(--main2));
+}
+#point-indicators-table .td {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    cursor: pointer;
+    padding: .3rem;
+}
+
+@media screen and (max-width: 600px) { 
+    #table-container {
+        max-height: calc(100vh - 11rem);
+    }
+    #point-indicators-table {
+        grid-template-columns: repeat(9, minmax(1.6rem, 1fr));
+    }
+    #point-indicators-table :nth-child(2n+3) {
+        grid-row: 3;
+    }
+}

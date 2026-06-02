@@ -1,0 +1,193 @@
+{% extends "alap_header.jinja" %}
+{% set current_page = 'Állás' -%}
+
+
+{% block head_elements %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/allas.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/allas_meccsinfo.css') }}"/>
+    <script src="{{ url_for('static',filename='scripts/allas.js') }}" defer></script>
+    <script src="{{ url_for('static',filename='scripts/allas_colors.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+{% endblock head_elements %}
+
+{% block main_content %}
+<main id="allas">
+    <div id="main-table">
+        <div id="allas-gombok">
+            <div id="nav-gombok">
+                <button class="content-gomb" onclick="scrollToDiv('top')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                        <path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/>
+                    </svg>
+                    <span class="info">A tetejére</span>
+                </button>        
+                <button class="content-gomb" onclick="scrollToDiv('user')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                        <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/>
+                    </svg>
+                    <span class="info">Hozzám</span>
+                </button>
+                <button class="content-gomb" onclick="scrollToDiv('bottom')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                        <path d="M440-800v487L216-537l-56 57 320 320 320-320-56-57-224 224v-487h-80Z"/>
+                    </svg>
+                    <span class="info">Az aljára</span>
+                </button>
+            </div> 
+            <div id="tippek-gombok">
+                <button id="toggle-follows-gomb" class="content-gomb" onclick="toggleNotFollowed()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                        <path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/>
+                    </svg>
+                    <span class="info">Csak a követettek megjelenítése</span>
+                </button>
+                <button id="show-tippek-gomb" class="content-gomb" data-doShow onclick="showTippek(event)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                        <path d="m298-262-56-56 121-122H80v-80h283L242-642l56-56 218 218-218 218Zm222-18v-80h360v80H520Zm0-320v-80h360v80H520Zm120 160v-80h240v80H640Z"/>
+                    </svg>
+                    <span class="info">Tippek megjelenítése</span>
+                </button>
+            </div>
+        </div>
+        <div id="table-container">
+            <table>
+                <thead>            
+                    <tr>
+                        <th scope="col" class="col1">#</th>
+                        <th scope="col" class="col2">pont</th>
+                        <th scope="col" class="col3">Név</th>
+                        <template id="eredmeny-template" >
+                            <th scope="col" data-mid="" onclick="loadMatchData(this.dataset['mid'])">
+                                <div class="eredmeny">
+                                    {# __asd osztályok csak a dinamikus kitöltéshez kellenek #}
+                                    <img class="__kep-link" src="">
+                                    <img class="__kep-link" src="">
+                                    <span class="__eredmeny-str">__goals_H__ - __goals_A__</span>
+                                </div>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                {% for rank, users in ranking.items() %}
+                    <tbody onmousedown="tableScrollMouseDown(event)">
+                        <tr>
+                        <th scope="row" class="col1" rowspan="{{users|length}}">
+                            {{rank}}.
+                        </th>
+
+                        <th scope="row" class="col2" rowspan="{{users|length}}">
+                            {{users[0].points}}
+                        </th>
+
+                        {% for user in users %}
+                            {% if loop.index > 1 %}
+                                <tr>
+                                <th class="col1" style="display: none"> {{rank}}. </th>
+                                <th class="col2" style="display: none"> {{user.points}} </th>
+                            {% endif %}
+                                <th scope="row"
+                                    class="col3"
+                                    data-uid="{{user.user_id}}"
+                                    data-rank="{{rank}}"
+                                    data-points="{{user.points}}"
+                                    {% if user != current_user %}
+                                        onclick="showFollowButton(event)"
+                                    {%endif%}
+                                    {% if user == current_user %} id="user" data-followed {%endif%}
+                                    {% if user in current_user.followings %} data-followed {%endif%}>
+                                    {{user.name}}
+                                    
+                                    {% if user != current_user %}
+                                        <button class="content-gomb" onclick="follow(event)"">
+                                            <svg class="follow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                                <path d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/>
+                                            </svg>
+                                            <svg class="unfollow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                                                <path d="M640-520v-80h240v80H640Zm-280 40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/>
+                                            </svg>
+                                            <span class="info unfollow">Kikövetés</span>
+                                            <span class="info follow">Követés</span>
+                                        </button>
+                                    {%endif%}
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% endfor %}
+                <template id="td-template">
+                    <td data-points="" onclick="highlightPoints(event)">
+                        <span></span>
+                    </th>
+                </template>
+            </table>
+        </div>
+    </div>
+    <div id="point-indicators-table">
+        <div>
+            Színek - Pontok
+        </div>
+        {% for i in range(0,18) %}
+            <div class="td" data-points={{i}} onclick="highlightPoints(event)">
+                {{i}}
+            </div>
+        {% endfor %}
+    </div>
+</main>
+<template id="meccs-info-template">
+    <div id="blur-layer" onclick="closeMatchInfo()">
+        <div class="meccs-info" onclick="event.stopPropagation()">
+            <div class="top-row">
+                <time datetime=""></time>
+                <svg class="close-info-button" viewbox="0 0 100 100" onclick="closeMatchInfo()">
+                    <line x1="10" x2="90" y1="10" y2="90" stroke-width="20"/>
+                    <line x1="10" x2="90" y1="90" y2="10" stroke-width="20"/>
+                </svg>
+            </div>
+            <div class="eredmenyjelzo">
+                <div class="flag">
+                    <img src="">
+                    <div class="border-blur"></div>
+                </div>
+                <div class="goals"></div>
+                <div class="goals"></div>
+                <div class="flag">
+                    <img src="">
+                    <div class="border-blur"></div>
+                </div>
+                <div class="csapat-nev"></div>
+                <div class="csapat-nev"></div>
+            </div>
+            <div class="odds bordered">
+                Előzetes oddsok
+                <div class="linear-indicator">
+                    <span style="--grow: 1"></span>
+                    <span style="--grow: 2"></span>
+                    <span style="--grow: 3"></span>
+                </div>
+            </div>
+            <div class="avg-tipp bordered">
+                Átlagos tipp
+                <div class="linear-indicator">
+                    <span style="--grow: 1"></span>
+                    <span style="--grow: 2"></span>
+                </div>
+            </div>
+            <div class="max-pont">
+                <span class="bordered">Max. szerezhető pont</span>
+                <span class="bordered"></span>         
+            </div>
+            <div class="bordered pontok-darab-tabla">
+                Pontok eloszlása
+                <div>
+                    <canvas id="myChart"></canvas>
+                    <div id="scale-toggle">
+                        <span onclick="toggleScaleMode(this)">lineáris</span>
+                        <span class="active" onclick="toggleScaleMode(this)">logaritmikus</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+{% endblock main_content%}

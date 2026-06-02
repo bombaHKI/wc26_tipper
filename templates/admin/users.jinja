@@ -1,0 +1,87 @@
+{% extends "admin/admin_header.jinja" %}
+{% set current_page = 'Felhasználók' -%}
+
+{% block head_elements %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/admin/users.css') }}" />
+<script src="{{ url_for('static',filename='scripts/admin/users.js') }}" defer></script>
+{% endblock head_elements %}
+
+{% block main_content %}
+<main>
+    <div class="table-container">
+        <h2>Felhasználók</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Email</th>
+                    <th>Művelet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr id="user-id-{{ user.user_id }}">
+                    <td>
+                        {{ user.name }}
+                    </td>
+                    <td>
+                        {{ user.email }}
+                    </td>
+                    <td>
+                        <div class="gombok">
+                            <button class="gomb delete"
+                                onclick="action('delete-user', {{user.user_id}})">Töröl</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="letrehoz-form-container">
+        <h2>Felhasználó hozzáadása</h2>
+        <form  id="letrehoz-form" method="POST" action="">
+            <div class="input-container">
+                <input name="name" type="text" maxlength="90" required>
+                <label for="name">Név</label>
+            </div>
+            <div class="input-container">
+                <input name="email" type="email" maxlength="90" 
+                        pattern="[^@\s]+@[^@\s]+\.[^@\s]+" 
+                        required>
+                <label for="email">Email</label>
+            </div>
+            <button class="gomb" type="submit">Hozzáad</button>
+        </form>
+    </div>
+    <div class="table-container">
+        <h2>Jelentkezők</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Email</th>
+                    <th>Döntés</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in candidates %}
+                <tr id="candidate-id-{{ candidate.id }}">
+                    <td>{{ candidate.name }}</td>
+                    <td>{{ candidate.email }}</td>
+                    <td>
+                        <div class="gombok">
+                            <button class="gomb"
+                                onclick="action('accept-candidate', {{candidate.id}})">Hozzáad</button>
+                            <button class="gomb delete"
+                                onclick="action('delete-candidate', {{candidate.id}})">Töröl</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>        
+    </div>
+</main>
+{% endblock main_content %}

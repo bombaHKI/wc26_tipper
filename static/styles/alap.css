@@ -1,0 +1,177 @@
+:root {
+    --text1: rgb(51, 51, 51);
+    --text2: rgb(245, 245, 245);
+    --text3: rgb(210, 210, 210);
+    --text4: rgb(180, 180, 180);
+    --text5: rgb(150, 150, 150);
+    --main1: rgb(0, 0, 150);
+    --main1_2: #adb9ff;
+    --main2: rgb(217, 25, 25);
+    --bg-from: rgb(250, 250, 248);
+    --bg-to: rgb(216, 222, 255);
+    --blur0_5: rgba(0, 0, 0, 0.05);
+    --blur1: rgba(0, 0, 0, 0.1);
+    --blur2: rgba(0, 0, 0, 0.2);
+    --blur4: rgba(0, 0, 0, 0.4);
+    --light-blur2: rgba(255, 255, 255, 0.2);
+
+    --message-bg-color: rgb(42, 205, 9);
+    --error-bg-color: rgb(255, 0, 0);
+}
+
+[data-theme="dark"] {
+    --dark-primary-bg: #121212;
+    --dark-primary-text: #ffffff;
+    --dark-secondary-bg: #1e1e1e;
+    --dark-secondary-text: #bbbbbb;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: inherit;
+    color: inherit;
+}
+
+html {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: "Roboto" ,sans-serif;
+    color: var(--text1);
+    background-image: linear-gradient(
+        175deg,
+        var(--bg-from) 30%,
+        var(--bg-to) 100%
+    );
+    background-attachment: fixed;
+    background-size: 100% 130%;
+}
+
+main {
+    margin-top: 4em;
+    margin-bottom: 1em;
+}
+
+/* #region inputok { */
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+input[type="text"], input[type="password"],
+input[type="email"] {
+    background-color: var(--neutral-color-light-gray);
+    color: var(--text1);
+    border: none;
+    outline: none;
+    padding: .7em 2ch;
+}
+
+.input-container {
+    position: relative;
+}
+
+.input-container label {
+    position: absolute;
+}
+
+.input-container input {
+    background-color: var(--text3);
+    border: 1px solid transparent;
+    transition: all .3s ease;
+    min-width: 30ch;
+}
+
+.input-container input:focus {
+    border-color: var(--main1)
+}
+
+.input-container label {
+    border-radius: 2px;
+    border: 1px solid transparent;
+    background-color: transparent;
+    position: absolute;
+    cursor: text;
+    top: 50%;
+    left: 1ch;
+    padding: 1px 3px; 
+    transform: translate(0,-50%);
+    color: var(--text5);
+    transition: .2s;
+}
+.input-container input:focus + label,
+.input-container input.non-empty + label {
+    border-color: var(--main1);
+    background-color: var(--main1);
+    color: var(--text3);
+    font-size: .5em;
+    top: 0;
+}
+
+/* #endregion inputok } */
+
+/*#region modals---------------------------------{*/
+    p#error,
+    p#message {
+        color: var(--text2);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .5s, visibility 0s .5s;
+        z-index: 11;
+        position: fixed;
+        text-align: center;
+        background-color: var(--error-bg-color);
+        border-radius: 5px;
+        padding: 1em;
+        bottom: 1em;
+        left: 1em;
+        max-width: calc(100% -4em);
+        transform-origin: left;
+        overflow: hidden;
+    }
+    p#error.visible,
+    p#message.visible {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s;
+        animation: msgSlideIn cubic-bezier(.73,1.85,.72,.72) .3s;
+    }
+    p#message {
+        background-color: var(--message-bg-color);
+    }
+    p#error::after,
+    p#message::after {
+        position: absolute;
+        height: 3px;
+        background-image: linear-gradient(to right, transparent -10%, var(--text2) 90%, transparent);
+        content: "";
+        top: 0;
+        left: 0;
+    }
+    p#error.visible::after,
+    p#message.visible::after {
+        animation: indicatorSlide 2s forwards;
+    }
+    @keyframes indicatorSlide {
+        from { width: 0; }
+        to { width: 110%; }
+    }
+    @keyframes msgSlideIn {
+        from { translate: -100%; }
+        to { translate: 0; }
+    }
+    /* #endregion } */
+    
+#udv-ujra {
+    text-align: center;
+}

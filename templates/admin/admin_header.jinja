@@ -1,0 +1,72 @@
+{% extends "alap.jinja" %}
+
+{% block head_elements %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/header.css') }}"/>
+	<script src="{{ url_for('static',filename='scripts/header.js') }}" defer></script>
+{% endblock head_elements %}
+
+
+{% set nav_options = [
+    ('Felhasználók', 'admin.users'),
+    ('Meccsek', 'admin.meccsek')
+] -%}
+
+{% set account_options = [
+    ('Játék oldal', 'index'),
+    ('Profil', 'profil'),
+    ('Kijelentkezés', 'logout')
+] -%}
+
+
+{% block body_content %}
+	<header class="small-header">
+		<div id="main-nav">
+			{% for caption, func in nav_options %}
+			 <a class="header-gomb {% if caption == current_page %}current-page{% endif %}" 
+			 href="{{url_for(func)}}">{{ caption }}</a>
+			{% endfor %}
+		</div>
+
+		<span id="logo">
+			euro24<img src="{{ url_for('static', filename='media/logo_mini.png')}}">tippjáték
+		</span>
+
+		<div id="user-menu" class="menu">
+			<a class="menu-gomb" href="#/">{{current_user.name}}</a>
+			<div class="dropdown-blur-layer"></div>
+			<div class="dropdown">
+				{% for caption, func in account_options %}				
+					<a class="header-gomb {% if caption == current_page %}current-page{% endif %}"
+					href="{{url_for(func)}}">{{ caption }}</a>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div id="hamburger-menu" class="menu">
+			<svg class="menu-gomb" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path class="line line1" d="M 4 6 10 6 16 6"/>
+                <path class="line line2" d="M 4 10 16 10 16 10 4 10 4 10"/>
+                <path class="line line3" d="M 4 14 10 14 16 14"/>
+            </svg>
+			<div class="dropdown-blur-layer"></div>
+			<div id="hamburger-menu-dropdown" class="dropdown">				
+				{% for caption, func in nav_options %}
+					<a class="header-gomb {% if caption == current_page %}current-page{% endif %}"
+					href="{{url_for(func)}}">{{ caption }}</a>
+				{% endfor %}
+				<hr>
+				{% for caption, func in account_options %}				
+					<a class="header-gomb {% if caption == current_page %}current-page{% endif %}" 
+					href="{{url_for(func)}}">{{ caption }}</a>
+				{% endfor %}
+			</div>
+		</div>
+	</header>
+
+	{% block main_content %}
+        <main>
+            <h1 id="udv-ujra">{{ current_user.name }} mint adminisztrátor!</h1>
+        </main>
+	{% endblock main_content %}
+{% endblock body_content %}

@@ -1,0 +1,9 @@
+__pycache__
+.venv
+data/config.json
+data/id_csapat.txt
+data/adatok.sqlite
+data/adatok_regi.sqlite
+teszt.py
+README.md
+media

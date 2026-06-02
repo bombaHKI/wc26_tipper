@@ -1,0 +1,221 @@
+#blur-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(3px);
+    background-color: var(--blur4);
+    z-index: 10;
+    display: grid;
+    place-content: center;
+}
+
+.bordered {
+    border: 1px solid var(--main1_2);
+    padding: .4rem;
+    border-radius: .2rem;
+}
+
+.meccs-info {
+    z-index: 10;
+    display: grid;
+    background: linear-gradient(var(--bg-from), var(--bg-to) 130%);
+    border-radius: .5em;
+    box-shadow: 0 5px 10px var(--blur4);
+    gap: 2px;
+    padding: 8px;
+    overflow: hidden;
+    animation: slideIn 1s forwards;
+}
+
+.top-row {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 2px;
+}
+
+.top-row > time {
+    font-size: .7rem;
+    padding: 2px 4px;
+    opacity: .9;
+}
+svg.close-info-button {
+    cursor: pointer;
+    height: .7rem;
+    position: absolute;
+    right: .2em;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform .4s cubic-bezier(.5,-0.8,.5,1.8);
+}
+.close-info-button line {
+    stroke: var(--main1_2);
+    transition: .3s;
+    transform-origin: 50% 50%;
+}
+@media (hover: hover) {
+    svg.close-info-button:hover{
+        transform: translateY(-50%) rotate(90deg) scale(1.3);
+    }
+}
+
+.eredmenyjelzo {
+    display: grid;
+    width: 100%;
+    gap: 2px;
+    grid-template-columns: 5rem 1fr 1fr 5rem;
+    grid-template-rows: 5rem auto;
+}
+.eredmenyjelzo > * {
+    border-radius: .2rem;
+}
+
+.flag {
+    width: 5rem;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: clip;
+}
+
+.flag img {
+    position: absolute;
+    height: 100%;
+    left: 50%;
+    translate: -50% 0;
+}
+
+.flag .border-blur {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+    box-shadow: inset 0 0 9px 3px black;
+}
+
+.csapat-nev {
+    text-transform: uppercase;
+    background-color: var(--main1_2);
+    grid-column: span 2;
+    padding: .3em;
+}
+.goals {
+    background-color: var(--bg-to);
+    min-width: 5rem;
+    font-size: 4rem;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.csapat-nev:last-of-type {
+    text-align: right;
+}
+
+.odds, .avg-tipp {
+    text-align: center;
+}
+
+.linear-indicator {
+    display: flex;
+    width: 100%;
+    margin-top: 4px;
+    overflow: clip;
+    border-radius: 2px;
+    font-size: .7em;
+}
+.linear-indicator span { 
+    position: relative;
+    flex: var(--grow) 0 0;
+    padding-bottom: 4px;
+}
+.linear-indicator span::after {
+    position: absolute;
+    top: calc(100% - 4px);
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 4px;
+}
+.linear-indicator span:nth-of-type(1)::after { 
+    background: linear-gradient(to left, var(--main2), transparent 150%);
+}
+    
+.linear-indicator span:nth-of-type(2)::after { 
+    background: var(--blur2);
+    /* background-color: var(--blur4); */
+}
+
+.linear-indicator span:last-of-type::after { 
+    background: linear-gradient(to left, var(--main1), transparent 150%);
+    /* background-color: var(--main1); */
+}
+
+.max-pont {
+    display: flex;
+    width: 100%;
+    gap: 2px;
+}
+.max-pont :first-child {
+    flex-grow: 1;
+}
+
+.pontok-darab-tabla {
+    text-align: center;
+    width: 100%;
+}
+
+.meccs-info > * {
+    overflow: hidden;
+    transform: none;
+    animation: slideIn 1s forwards;
+}
+
+@keyframes slideIn {
+    from {  opacity: 0; }
+    to { opacity: 1; }
+}
+
+#scale-toggle {
+    font-size: .7rem;
+    color: rgb(82, 80, 89);
+    cursor: pointer;
+    display: flex;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+#scale-toggle span {
+    padding: 2px 3px;
+    position: relative;
+    overflow: clip;
+    transition: color .2s;
+}
+#scale-toggle span::after {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: var(--main1);
+    transition: translate .4s cubic-bezier(.4,-0.5,.6,1.5);
+}
+#scale-toggle span.active {
+    color: rgb(206, 206, 206);
+}
+#scale-toggle span:first-child::after {
+    translate: 105% 0;
+}
+#scale-toggle span:last-child::after {
+    translate: -105% 0;
+}
+#scale-toggle span.active::after {
+    translate: 0 0;
+}
