@@ -3,6 +3,7 @@ from sema import Match, Bet, User
 from config import apiJson
 from db import session
 import sqlalchemy as sa
+from datetime import datetime
 
 TOTAL_SUM_GOAL = 16
 EXTRA_PTS_APPROX = 1.2
@@ -35,58 +36,95 @@ def convert_odds(a0, b0, c0):
     return a, b, c
 
 def update_matches():
-    response = requests.get(apiJson["base-url"]+"/matches", headers=apiJson["headers"])
-    if response.status_code == 200:
-        data = response.json()
-        matches = data.get("matches", [])
-        for match_data in matches:
+    response = requests.get(
+        apiJson["base-url"] + "/matches",
+        headers=apiJson["headers"]
+    )
 
-            match = session.get(Match, match_data["id"])
-            match.team_H_id = match_data["homeTeam"]["id"]
-            match.team_A_id = match_data["awayTeam"]["id"]
-
-            scoreKey = "fullTime"
-            if match_data["score"]["duration"] != "REGULAR":
-                scoreKey = "regularTime"
-
-            no_score = None in (match.goals_A, match.goals_H)
-
-            match.goals_H = match_data["score"][scoreKey]["home"]
-            match.goals_A = match_data["score"][scoreKey]["away"]
-            
-            if None not in (match.team_H_id, match.team_A_id):
-                try:
-                    x0 = match_data["odds"]["homeWin"]
-                    y0 = match_data["odds"]["draw"]
-                    z0 = match_data["odds"]["awayWin"]
-                    if None not in (x0,y0,z0):
-                        x0 = float(x0)
-                        y0 = float(y0)
-                        z0 = float(z0)
-                        x1, y1, z1 = convert_odds(x0,y0,z0)
-                        
-                        match.odds_H = x1
-                        match.odds_X = y1
-                        match.odds_A = z1
-                except KeyError:
-                    print("\n\nNincs odds package!!!\n\n")
-
-                if no_score and None not in (match.goals_A, match.goals_H):
-                    update_points(match)
-        
-        for user in User.query.all():
-            user.update_points()
-
-        try:
-            session.commit()
-        except sa.exc.SQLAlchemyError:
-            session.rollback()
-            error = "\n\nHiba az adatbázisba íráskor!\n\n"
-            print(error)
-    else:
+    if response.status_code != 200:
         print(f"Failed to retrieve data. Status code: {response.status_code}")
-        print(response.json())
+        print(response.text)
+        return
 
-def update_points(Match):
-    for b in Match.bets:
+    data = response.json()
+    matches = data.get("matches", [])
+
+    for match_data in matches:
+
+        home_team = match_data.get("homeTeam", {}).get("id")
+        away_team = match_data.get("awayTeam", {}).get("id")
+
+        if home_team is None or away_team is None:
+            continue
+
+        match = session.get(Match, match_data["id"])
+
+        if match is None:
+            match = Match(
+                match_id=match_data["id"],
+                start_date=datetime.fromisoformat(
+                    match_data["utcDate"].replace("Z", "+00:00")
+                ),
+                team_H_id=home_team,
+                team_A_id=away_team,
+                odds_H=1,
+                odds_X=1,
+                odds_A=1
+            )
+            session.add(match)
+
+        else:
+            match.team_H_id = home_team
+            match.team_A_id = away_team
+            match.start_date = datetime.fromisoformat(
+                match_data["utcDate"].replace("Z", "+00:00")
+            )
+            
+        score = match_data.get("score", {})
+        score_key = "fullTime" if score.get("duration") == "REGULAR" else "regularTime"
+        score_data = score.get(score_key) or {}
+
+        home = score_data.get("home")
+        away = score_data.get("away")
+
+        was_unscored = match.goals_H is None or match.goals_A is None
+
+        if home is not None and away is not None:
+            match.goals_H = home
+            match.goals_A = away
+
+            if was_unscored:
+                update_match_points(match)
+
+
+        odds_data = match_data.get("odds")
+
+        if odds_data:
+            x0 = odds_data.get("homeWin")
+            y0 = odds_data.get("draw")
+            z0 = odds_data.get("awayWin")
+
+            if None not in (x0, y0, z0):
+                x0, y0, z0 = map(float, (x0, y0, z0))
+                x1, y1, z1 = convert_odds(x0, y0, z0)
+
+                match.odds_H = x1
+                match.odds_X = y1
+                match.odds_A = z1
+        else:
+            match.odds_H = match.odds_H or 1
+            match.odds_X = match.odds_X or 1
+            match.odds_A = match.odds_A or 1
+
+    for user in User.query.all():
+        user.update_points()
+
+    try:
+        session.commit()
+    except sa.exc.SQLAlchemyError as e:
+        session.rollback()
+        print("Database error during update:", str(e))
+
+def update_match_points(match):
+    for b in match.bets:
         b.update_points()

@@ -26,7 +26,7 @@
                 </div>
                 <div class="eredmenyjelzo">
                     <span class="csapat-nev">{{match.team_H.name}}</span>
-                    <img src="{{ match.team_H.name|img_url_from_name }}">
+                    <img src="{{ match.team_H.team_id|img_url_from_id }}">
                     {% if closed %}
                         {% set no_bet = bet == None %}
                         <span class="score">{{ '' if no_bet else bet.bet_H }}</span>
@@ -39,7 +39,7 @@
                         <span class="kotojel">-</span>
                         <input class="score" name="bet_A-{{match.match_id}}" type="number" placeholder="?" min="0" step="1" max="15" value="{{bet.bet_A}}">
                     {% endif %}
-                    <img src="{{ match.team_A.name|img_url_from_name }}">
+                    <img src="{{ match.team_A.team_id|img_url_from_id }}">
                     <span class="csapat-nev">{{match.team_A.name}}</span>
                 </div>
                 {% if closed %}

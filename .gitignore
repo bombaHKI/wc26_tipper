@@ -1,5 +1,6 @@
 __pycache__
 .venv
+venv
 data/config.json
 data/id_csapat.txt
 data/adatok.sqlite

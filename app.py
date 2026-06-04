@@ -26,10 +26,10 @@ def create_app():
    return app
 app = create_app()
 
-def img_url_from_name(str):
-   return url_for('static', filename=f'media/csapatok/{unidecode(str).lower().replace(" ","_")}.svg')
+def img_url_from_id(team_id):
+   return url_for('static', filename=f'media/csapatok/{team_id}.svg')
 
-app.jinja_env.filters["img_url_from_name"] = img_url_from_name
+app.jinja_env.filters["img_url_from_id"] = img_url_from_id
 app.jinja_env.globals.update(points=points) 
 
 @app.route("/")
@@ -95,7 +95,6 @@ def meccsek():
                   .filter(Match.team_A_id.isnot(None)) \
                   .order_by(Match.start_date) \
                   .all()
-      print(matches_bets[0][0].start_date_utc)
       return render_template("meccsek.jinja",
                              now = now,
                              matches_bets = matches_bets)
@@ -198,8 +197,8 @@ def tippek_data():
             "goals_H": m.goals_H,
             "goals_A": m.goals_A,
             "start_date": m.start_date,
-            "kep_H": img_url_from_name(m.team_H.name),
-            "kep_A": img_url_from_name(m.team_A.name)
+            "kep_H": img_url_from_id(m.team_H.team_id),
+            "kep_A": img_url_from_id(m.team_A.team_id)
          }
          for m in matches_with_scores
       ]
@@ -230,8 +229,8 @@ def meccs_data(m_id):
    if not match or None in (match.goals_H, match.goals_A):
       return {"valid": False}
    matchInfo = match.info_dict()
-   matchInfo["kep_H"] = img_url_from_name(match.team_H.name)
-   matchInfo["kep_A"] = img_url_from_name(match.team_A.name)
+   matchInfo["kep_H"] = img_url_from_id(match.team_H.team_id)
+   matchInfo["kep_A"] = img_url_from_id(match.team_A.team_id)
    responseDict = { "matchInfo": matchInfo }
    responseDict["maxPoint"] = points(match.goals_H,
                                     match.goals_A,

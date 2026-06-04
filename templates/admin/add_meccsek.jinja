@@ -26,8 +26,8 @@
             </div>
             <div class="eredmenyjelzo">
                 <span class="csapat-nev">{{match.team_H.name}}</span>
-                <img src="{{ match.team_H.name|img_url_from_name }}">
-                <img src="{{ match.team_A.name|img_url_from_name }}">
+                <img src="{{ match.team_H.team_id|img_url_from_id }}">
+                <img src="{{ match.team_A.team_id|img_url_from_id }}">
                 <span class="csapat-nev">{{match.team_A.name}}</span>
             </div>
             <div class="odds-inputok">

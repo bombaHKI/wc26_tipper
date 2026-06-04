@@ -121,7 +121,8 @@ def handle_candidate(action, candidate_id):
 @login_required
 @admin_required
 def meccsek():
-    now=datetime.now(timezone.utc)
+    now = datetime.now(timezone.utc)
+
     if request.method == 'GET':
         coming_matches = Match.query \
             .filter(Match.team_H_id.isnot(None)) \
@@ -129,19 +130,34 @@ def meccsek():
             .filter(Match.start_date_utc > now) \
             .order_by(Match.start_date) \
             .all()
-        return render_template('admin/add_meccsek.jinja',
-                                coming_matches = coming_matches)
-    
+
+        return render_template(
+            'admin/add_meccsek.jinja',
+            coming_matches=coming_matches
+        )
+
     data = request.json
+
     if data["action"] == "update-matches":
         try:
             update_matches()
-            return {"response": "Meccsek frissítése sikeres!", "type": "message"}
+            return {
+                "response": "Meccsek frissítése sikeres!",
+                "type": "message"
+            }
+
         except Exception as e:
-            return {"response": "Valami hiba!", "type": "error", "error": e}
+            import traceback
+            traceback.print_exc()
+
+            return {
+                "response": f"Valami hiba történt: {str(e)}",
+                "type": "error"
+            }
 
     elif data["action"] == "update-odds":
         error = ""
+
         for match_id, odds in data["odds"].items():
             try:
                 m_id = int(match_id)
@@ -149,29 +165,46 @@ def meccsek():
                 odds_X = float(odds["odds_X"])
                 odds_A = float(odds["odds_A"])
             except Exception:
-                error = "Hibás bemenet!"
+                error = "Hibás odds bemenet!"
                 break
 
             match = db.session.get(Match, m_id)
-            if match == None:
+
+            if match is None:
                 error = "Nem létező meccsre próbált oddsot adni!"
                 break
+
             if match.start_date_utc < now:
-                    error = "Már lezárult meccsre próbált  oddsot adni!"
-                    break
-            
-            x1, y1, z1 = convert_odds(odds_H,odds_X,odds_A)                        
+                error = "Már lezárult meccsre próbált oddsot adni!"
+                break
+
+            x1, y1, z1 = convert_odds(odds_H, odds_X, odds_A)
+
             match.odds_H = x1
             match.odds_X = y1
             match.odds_A = z1
-    
-        if error != "":
+
+        if error:
             db.session.rollback()
-            return {'response': error}
+            return {"response": error, "type": "error"}
+
         try:
             db.session.commit()
         except sa.exc.SQLAlchemyError as e:
             db.session.rollback()
-            error = "Hiba az adatbázisba íráskor!"
-            return {'response': error, "error": e}
-        return {"response": "Oddsok frissítése sikeres", "type": "message"}
+
+            return {
+                "response": "Hiba az adatbázisba íráskor!",
+                "type": "error",
+                "error": str(e)
+            }
+
+        return {
+            "response": "Oddsok frissítése sikeres",
+            "type": "message"
+        }
+
+    return {
+        "response": "Ismeretlen művelet",
+        "type": "error"
+    }

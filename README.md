@@ -1,13 +1,12 @@
 
-# Euro 24 tippjáték oldal
+# FIFA World Cup 26 tippjáték oldal
+
 ## Leírás
 
-A projekt a 2024-es UEFA Európabajnokságra készült. A játék lényege eltalálni a meccsek pontos végkimenetelét és a jó tippekért pontokat gyűjteni.
+A projekt a 2026-os FIFA Világbajnokságra készült. A játék lényege eltalálni a meccsek pontos végkimenetelét és a jó tippekért pontokat gyűjteni.
 A meccsekre kapott pontok függnek a meccs végkimenetelének előzetes esélyeitől, valamint a lőtt gólok számától.
-Az oldal az alábbi linken érhető el: <https://hkadus.pythonanywhere.com>.
-Vendég belépési adatok:
-email: guest@guest.com
-jelszó: guest
+Az oldal még nem publikus.
+<!-- TODO: update az elérhetőséget -->
 
 ## Funkciók
 
@@ -27,9 +26,6 @@ jelszó: guest
 - **Frontend**: JavaScript, Jinja (HTML), CSS. Külső könyvtárak nélkül.
 - **Backend**: Python, Flask
 - **Adatbázis**: SQLAlchemy, MySQL
-
-## Megjegyzés
-Az oldal [eredetijét](http://molnar-saska.hu/) Molnár-Sáska Zoltán, volt osztálytársam készítette. Az eredeti PHP-ban íródott, én ezt készítettem el teljesen nulláról a kódbázis ismerete nélkül, újragondolt megjelenéssel és funkciókkal.
 
 ## Média
 ### Login oldal
