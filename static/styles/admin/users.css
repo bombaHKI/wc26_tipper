@@ -6,15 +6,6 @@ main {
     justify-content: safe center;
 }
 
-.table-container, #letrehoz-form-container {
-    background: linear-gradient(355deg, var(--bg-from) 30%, var(--bg-to) 200%);
-    background-attachment: fixed;
-    box-shadow: 0 4px 10px var(--blur4), 0 0 30px var(--blur2);
-    border-radius: 10px;
-    padding: 1em;
-    width: fit-content;
-}
-
 h2 {
     text-align: center;
     margin-bottom: .5em;
@@ -78,13 +69,6 @@ table tr:nth-child(even) {
     background-color: transparent;
     color: var(--error-bg-color);
     box-shadow: 0 0 10px var(--error-bg-color);
-}
-
-#letrehoz-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1em;
 }
 
 /* #region tr remove animation { */

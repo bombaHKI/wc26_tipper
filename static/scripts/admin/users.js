@@ -42,14 +42,6 @@ async function sendAction(actionType, userData) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("letrehoz-form").addEventListener("submit", async event => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        sendAction("addUser", Object.fromEntries(new FormData(form)));
-    });
-});
-
 function action(action, id) {
     if (confirm('Biztos?'))
         sendAction(action, {id: id});

@@ -44,9 +44,7 @@ def users():
         if not action or not user_data:
             return {"response": "Missing action or user data", "type": "error"}
         
-        if action == 'addUser':
-            return add_user(user_data)
-        elif action == "delete-user":
+        if action == "delete-user":
             return delete_user(user_data)
 
     except Exception as e:
@@ -68,16 +66,6 @@ def delete_user(user_data):
     db.session.delete(user)
     db.session.commit()
     return {"response": "Fiók törölve!", "type": "message"}
-
-def add_user(user_data):
-    password = token_urlsafe(13)
-    new_user = User(
-        name=user_data["name"]
-    )
-    new_user.set_password(password)
-    db.session.add(new_user)
-    db.session.commit()
-    return {"response": "Fiók létrehozva!", "type": "message"}
 
 @admin_bp.route('/meccsek', methods=['GET', 'POST'])
 @login_required
