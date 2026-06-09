@@ -34,7 +34,7 @@ app.jinja_env.globals.update(points=points)
 @app.route("/")
 @login_required
 def index():
-   return render_template("alap_header.jinja")
+   return redirect(url_for("allas"))
 
 @app.route("/login", methods=["GET","POST"])
 def login():
