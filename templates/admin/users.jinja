@@ -15,7 +15,6 @@
             <thead>
                 <tr>
                     <th>Név</th>
-                    <th>Email</th>
                     <th>Művelet</th>
                 </tr>
             </thead>
@@ -24,9 +23,6 @@
                 <tr id="user-id-{{ user.user_id }}">
                     <td>
                         {{ user.name }}
-                    </td>
-                    <td>
-                        {{ user.email }}
                     </td>
                     <td>
                         <div class="gombok">
@@ -46,42 +42,8 @@
                 <input name="name" type="text" maxlength="90" required>
                 <label for="name">Név</label>
             </div>
-            <div class="input-container">
-                <input name="email" type="email" maxlength="90" 
-                        pattern="[^@\s]+@[^@\s]+\.[^@\s]+" 
-                        required>
-                <label for="email">Email</label>
-            </div>
             <button class="gomb" type="submit">Hozzáad</button>
         </form>
-    </div>
-    <div class="table-container">
-        <h2>Jelentkezők</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Név</th>
-                    <th>Email</th>
-                    <th>Döntés</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for candidate in candidates %}
-                <tr id="candidate-id-{{ candidate.id }}">
-                    <td>{{ candidate.name }}</td>
-                    <td>{{ candidate.email }}</td>
-                    <td>
-                        <div class="gombok">
-                            <button class="gomb"
-                                onclick="action('accept-candidate', {{candidate.id}})">Hozzáad</button>
-                            <button class="gomb delete"
-                                onclick="action('delete-candidate', {{candidate.id}})">Töröl</button>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>        
     </div>
 </main>
 {% endblock main_content %}

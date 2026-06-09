@@ -17,7 +17,6 @@ class User(UserMixin, Base):
     __tablename__ = "user"
     user_id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
-    email = Column(String(100), nullable=False, unique=True)
     password_hash = Column(String(255),  nullable=False)    
     is_admin = Column(Boolean, default=False)
     points = Column(Integer, default=0)
@@ -43,14 +42,6 @@ class User(UserMixin, Base):
     def update_points(self):
         self.points = sum([b.points for b in self.bets])
 
-    def __repr__(self):
-        return f'<U id: {self.user_id}; n: {self.name!r}>'
-
-class Candidate(Base):
-    __tablename__ = "candidate"
-    id = Column(Integer, primary_key=True)
-    email = Column(String(100), nullable=False, unique=True)
-    name = Column(String(100), nullable=False)
     def __repr__(self):
         return f'<U id: {self.user_id}; n: {self.name!r}>'
 

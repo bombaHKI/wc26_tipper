@@ -31,9 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = form.action;
             var postJson = Object.fromEntries(new FormData(form));
             postJson["action"] = actionType;
-            postJson["email"] = postJson["email"].trim();
-            if (actionType === "signup")
-                postJson["username"] = postJson["username"].trim();    
+            postJson["username"] = postJson["username"].trim();  
             try {
                 const fetchData = {
                     method: "POST",

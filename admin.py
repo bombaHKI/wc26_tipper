@@ -8,8 +8,7 @@ from secrets import token_urlsafe
 from datetime import datetime, timezone
 import db
 from odds import update_matches, convert_odds
-from sema import User, Candidate, Bet, Follow, Match
-from send_email import send_email
+from sema import User, Bet, Follow, Match
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -33,10 +32,8 @@ def index():
 @admin_required
 def users():
     if request.method == 'GET':
-        candidates = Candidate.query.all()
         users = User.query.all()
         return render_template('admin/users.jinja',
-                               candidates=candidates,
                                users=users)
     
     try:
@@ -51,8 +48,6 @@ def users():
             return add_user(user_data)
         elif action == "delete-user":
             return delete_user(user_data)
-        else:
-            return handle_candidate(action, user_data["id"])
 
     except Exception as e:
         db.session.rollback()
@@ -76,46 +71,13 @@ def delete_user(user_data):
 
 def add_user(user_data):
     password = token_urlsafe(13)
-    if User.query.filter(User.email == user_data["email"]).first():
-        return {"response": "Email cím már létezik!", "type": "error"}
-
     new_user = User(
-        name=user_data["name"],
-        email=user_data["email"]
+        name=user_data["name"]
     )
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
-    send_email(new_user, "at_new_user", password)
     return {"response": "Fiók létrehozva!", "type": "message"}
-
-def handle_candidate(action, candidate_id):
-    if not candidate_id:
-        return {"response": "Missing candidate ID", "type": "error"}
-
-    candidate = Candidate.query.get(int(candidate_id))
-    if not candidate:
-        return {"response": "Candidate not found", "type": "error"}
-    
-    if action == "accept-candidate":
-        user = User(
-            name=candidate.name,
-            email=candidate.email
-        )
-        password = token_urlsafe(13)
-        user.set_password(password)
-        db.session.add(user)
-        send_email(user, "at_new_user", password)
-        message = "Jelentkező sikeresen hozzáadva!"
-    elif action == "delete-candidate":
-        message = "Jelentkező törölve!"
-    else:
-        return {"response": "Unknown action", "type": "error"}
-    
-    
-    db.session.delete(candidate)
-    db.session.commit()
-    return {"response": message, "type": "message"}
 
 @admin_bp.route('/meccsek', methods=['GET', 'POST'])
 @login_required

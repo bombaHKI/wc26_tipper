@@ -3,9 +3,8 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 import sqlalchemy as sa
 from datetime import datetime, timezone
 from unidecode import unidecode
-from sema import User, Candidate, Match, Bet, points
+from sema import User, Match, Bet, points
 from db import session
-from send_email import send_email
 from config import appConfigJson
 from admin import admin_bp
 
@@ -45,12 +44,12 @@ def login():
    error = None
    message = None
    formJSON = request.json
-   email = formJSON["email"].strip()
+   name = formJSON["username"].strip()
    if formJSON["action"] == "login":
-      user = User.query.filter(User.email == email).first()
+      user = User.query.filter(User.name == name).first()
       if user == None or \
          not user.check_password(formJSON["password"]):
-         error = "Jelszó vagy email nem stimmelt!"
+         error = "Jelszó vagy felhasználónév nem stimmelt!"
       else:
          login_user(user)
          return {
@@ -58,17 +57,29 @@ def login():
             "type": "message" 
          }
    elif formJSON["action"] == "signup":
-      name =  formJSON["username"].strip()
-      if User.query.filter(User.email == email).first() != None:
-         error = "Ezzel az e-amil címmel már létezik fiók!"
-      elif Candidate.query.filter(Candidate.email == email).first() != None:
-         error = "Ezzel az e-amil címmel már jelentkeztek!"
+      password = formJSON.get("password", "").strip()
+      password_confirm = formJSON.get("password_confirm", "").strip()
+      
+      # Validation
+      if not password or not password_confirm:
+         error = "Jelszó és jelszó megerősítés kötelező!"
+      elif password != password_confirm:
+         error = "A jelszavak nem egyeznek!"
+      elif len(password) < 6:
+         error = "A jelszó legalább 6 karakter hosszú kell, hogy legyen!"
+      elif User.query.filter(User.name == name).first() != None:
+         error = "Ezzel a névvel címmel már létezik fiók!"
       else:
-         candidate = Candidate(name=name, email=email)
-         session.add(candidate)
+         # Create new user with password
+         new_user = User(name=name)
+         new_user.set_password(password)
+         session.add(new_user)
          session.commit()
-         message = "Sikeres jelentkezés!"
-         send_email(candidate,"at_signup")
+         login_user(new_user)
+         return {
+            "url": url_for("index",_external=True), 
+            "type": "message" 
+         }
    if error != None:
       return {"response": error, "type": "error"}
    else:
@@ -265,7 +276,6 @@ def profil():
       error = "Rossz jelszó!"
    elif formJSON["action"] == "data-change":
       current_user.name = formJSON["username"].strip()
-      current_user.email =  formJSON["email"].strip()
       
    elif formJSON["action"] == "password-change":
       newPass =  formJSON["new-password"]
@@ -278,7 +288,6 @@ def profil():
    if error == None:
       try:
          session.commit()
-         send_email(current_user,"at_data_change")
          return {"response": "Sikeres módosítás!", "type": "message"}
       except:
          error = "Valami hiba történt!"
@@ -290,4 +299,4 @@ def logout():
    return redirect(url_for("login"))
 
 if __name__ == "__main__":
-   app.run(debug=False)
+   app.run(debug=True)

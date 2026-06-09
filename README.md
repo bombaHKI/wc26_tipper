@@ -15,10 +15,10 @@ Az oldal még nem publikus.
 - **Állás**: Az összes felhasználó gyűjtött pontjai alapján felállított ranglista.
 - **Tippek**: Minden felhasználó tippjeit (és az azokért járó pontokat) meg lehet nézni.
 - **Követés**: Lehetséges más felhasználókat követni (egyirányú, a követett nem kap értesítést). Lehetséges csak a követettek tippjeit és ranglistáját megtekinteni.
-- **Profil tevékenységek**: Be/Kijelentkezés, adatok módosítása (email, felhasználónév, jelszó).
+- **Profil tevékenységek**: Be/Kijelentkezés, adatok módosítása (felhasználónév, jelszó).
 
 ### Admin
-- **Felhasználók kezelése**: A játékra jelentkezőt elfogadása/elutasítása. A felvett jelentkezők automatikus emailt kapnak egy biztonságosan generált jelszóval.
+- **Felhasználók kezelése**: A játékosok eltávolítása.
 - **Meccsek kezelése**: Meccsek automatikus frissítése (időpontok, új meccsek) egy API hívással.
 - **Oddsok**: A meccsekre kapható plusz pontok frissítése valós fogadóirodák által adott oddsok alapján.
 

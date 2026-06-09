@@ -23,9 +23,7 @@ async function sendAction(actionType, userData) {
         if (responseJson.type === "message" && userData["id"]) {
             var id = userData["id"];
             var rowElement;
-            if (actionType === "delete-candidate" || actionType === "accept-candidate")
-                rowElement = document.getElementById("candidate-id-" + id);
-            else if (actionType === "delete-user") {
+            if (actionType === "delete-user") {
                 console.log("user-id-" + responseJson["user-id"]);
                 rowElement = document.getElementById("user-id-" + id);
             }

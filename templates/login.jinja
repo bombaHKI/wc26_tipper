@@ -17,10 +17,8 @@
                 <h2>Belépés</h2>
                 <div class="inputok">
                     <div class="input-container">
-                        <input name="email" type="email" maxlength="90" 
-                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                            required>
-                        <label for="email">Email</label>
+                        <input name="username" type="text" maxlength="90" required>
+                        <label for="username">Felhasználónév</label>
                     </div>
                     <div class="input-container">
                         <input name="password"  type="password" value="" maxlength="90" required>
@@ -34,14 +32,16 @@
                 <h2>Jelentkezés</h2>
                 <div class="inputok">
                     <div class="input-container">
-                        <input name="email" type="email" maxlength="90" 
-                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                            required>
-                        <label for="email">Email</label>
+                        <input name="username" type="text" maxlength="90" required>
+                        <label for="username">Felhasználónév</label>
                     </div>
                     <div class="input-container">
-                        <input name="username" type="text" maxlength="90" required>
-                        <label for="username">Név</label>
+                        <input name="password" type="password" maxlength="90" required>
+                        <label for="password">Jelszó</label>
+                    </div>
+                    <div class="input-container">
+                        <input name="password_confirm" type="password" maxlength="90" required>
+                        <label for="password_confirm">Jelszó újra</label>
                     </div>
                 </div>
                 <button class="gomb" name="submit" type="submit">Jelentkezés</button>
@@ -57,8 +57,7 @@
                 </div>
                 <div class="content for-signup">
                     <h2>Játszon Ön is!</h2>
-                    <p>Miután megadta adatait, az adminisztrátor létrehoz Önnek egy fiókot.
-                    Erről e-mailen kap tájékoztatást.</p>
+                    <p>Adjon meg egy szimpatikus felhasználónevet és jelszavat, hogy játszhasson!</p>
                     <div class="change-form">
                         <span>Van már fiókja?</span><br>
                         <button class="switch-gomb" onclick="switchForm()">Bejelentkezés</button>
