@@ -1,4 +1,5 @@
 from datetime import datetime, timezone, timedelta
+import traceback
 from sema import Match
 from odds import update_matches
 from db import session
@@ -41,7 +42,6 @@ def run_job():
             print(f"[{datetime.now(timezone.utc)}] No unscored matches from 1.5+ hours ago. Skipping update.")
     except Exception as e:
         print(f"[{datetime.now(timezone.utc)}] Error during update_matches_job: {e}")
-        import traceback
         traceback.print_exc()
 
 if __name__ == "__main__":
