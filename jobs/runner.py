@@ -1,6 +1,6 @@
 
 from app import app
-from update_matches_job import run_job
+from jobs.update_matches_job import run_job
 import time
 from datetime import datetime, timezone
 
