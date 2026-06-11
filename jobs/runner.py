@@ -32,4 +32,4 @@ if __name__ == "__main__":
             except Exception as e:
                 logger.error(f"Error: {e}")
 
-            time.sleep(300)  # 5 minutes
+            time.sleep(1800)  # 5 minutes
