@@ -4,6 +4,21 @@ from sema import Match
 from odds import update_matches
 from db import session
 import sqlalchemy as sa
+import logging
+import os
+
+# Set up logging
+log_dir = os.path.dirname(os.path.abspath(__file__))
+log_file = os.path.join(log_dir, 'jobs.log')
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 def should_update_matches():
     """
@@ -25,7 +40,7 @@ def should_update_matches():
         
         return match_needs_update is not None
     except Exception as e:
-        print(f"Error checking if update is needed: {e}")
+        logger.error(f"Error checking if update is needed: {e}")
         return False
 
 def run_job():
@@ -35,14 +50,14 @@ def run_job():
     """
     try:
         if should_update_matches():
-            print(f"[{datetime.now(timezone.utc)}] Found unscored match from 1.5+ hours ago. Running update_matches()...")
+            logger.info("Found unscored match from 1.5+ hours ago. Running update_matches()...")
             update_matches()
-            print(f"[{datetime.now(timezone.utc)}] Update completed successfully.")
+            logger.info("Update completed successfully.")
         else:
-            print(f"[{datetime.now(timezone.utc)}] No unscored matches from 1.5+ hours ago. Skipping update.")
+            logger.info("No unscored matches from 1.5+ hours ago. Skipping update.")
     except Exception as e:
-        print(f"[{datetime.now(timezone.utc)}] Error during update_matches_job: {e}")
-        traceback.print_exc()
+        logger.error(f"Error during update_matches_job: {e}")
+        logger.error(traceback.format_exc())
 
 if __name__ == "__main__":
     run_job()
