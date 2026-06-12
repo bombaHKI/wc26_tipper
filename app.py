@@ -68,7 +68,7 @@ def login():
       elif len(password) < 6:
          error = "A jelszó legalább 6 karakter hosszú kell, hogy legyen!"
       elif User.query.filter(User.name == name).first() != None:
-         error = "Ezzel a névvel címmel már létezik fiók!"
+         error = "Ezzel a névvel már létezik fiók!"
       else:
          # Create new user with password
          new_user = User(name=name)
