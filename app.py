@@ -213,7 +213,6 @@ def tippek_data():
          }
          for m in matches_with_scores
       ]
-   print("eddig eltelt ido: ",(datetime.now(timezone.utc) - now).total_seconds(), " mp") #TODO: ez teszthez kell
   
 
    results = session.query(User.user_id, Bet, Match.match_id)\
@@ -229,8 +228,7 @@ def tippek_data():
       if user_id not in responseDict["all_bets"]:
          responseDict["all_bets"][user_id] = {}
       responseDict["all_bets"][user_id][match_id] = bet.info_dict()
-
-   print("eddig eltelt ido: ",(datetime.now(timezone.utc) - now).total_seconds(), " mp") #TODO: ez teszthez kell    
+    
    return responseDict
 
 @app.route("/meccsinfo/<m_id>", methods=["GET"])
