@@ -44,13 +44,6 @@ html {
 body {
     font-family: "Roboto" ,sans-serif;
     color: var(--text1);
-    background-image: linear-gradient(
-        175deg,
-        var(--bg-from) 30%,
-        var(--bg-to) 100%
-    );
-    background-attachment: fixed;
-    background-size: 100% 130%;
 }
 
 main {

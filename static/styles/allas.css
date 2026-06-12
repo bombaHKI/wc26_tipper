@@ -14,6 +14,7 @@
     position: relative;
     overflow: scroll;
     max-height: calc(100vh - 10rem);
+    max-height: calc(100dvh - 10rem);
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
@@ -377,6 +378,7 @@ td::after {
 @media screen and (max-width: 600px) { 
     #table-container {
         max-height: calc(100vh - 11rem);
+        max-height: calc(100dvh - 11rem);
     }
     #point-indicators-table {
         grid-template-columns: repeat(9, minmax(1.6rem, 1fr));
