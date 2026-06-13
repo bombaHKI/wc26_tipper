@@ -25,7 +25,7 @@ def admin_required(f):
 @login_required
 @admin_required
 def index():
-    return render_template('admin/admin_header.jinja')
+    return redirect(url_for('admin.meccsek'))
 
 @admin_bp.route('/users', methods=['GET', 'POST'])
 @login_required
