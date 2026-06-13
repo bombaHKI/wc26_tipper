@@ -35,6 +35,17 @@ def convert_odds(a0, b0, c0):
         raise Exception(f'{a}+{b}+{c}={a+b+c} is not allowed.')
     return a, b, c
 
+def update_all_points():
+    for m in Match.query.all():
+        update_match_points(m)
+    for u in User.query.all():
+        u.update_points()
+    try:
+        session.commit()
+    except sa.exc.SQLAlchemyError as e:
+        session.rollback()
+        print("Database error during update:", str(e))
+
 def update_matches():
     response = requests.get(
         apiJson["base-url"] + "/matches",

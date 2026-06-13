@@ -12,6 +12,7 @@
 {% block main_content %}
 <main>
     <button class="gomb" onclick="updateMatches()">Meccsek frissítése</button>
+    <button class="gomb" onclick="updateAllPoints()">Pontok újraszámolása</button>
 
     <form id="meccsek" method="post">
     {% for match in coming_matches %}

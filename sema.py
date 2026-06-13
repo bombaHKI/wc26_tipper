@@ -48,6 +48,9 @@ class User(UserMixin, Base):
 def points(bet_H, bet_A, match):
     if match is None:
         return 0
+    
+    if match.goals_H is None or match.goals_A is None:
+        return 0
 
     points = 0
     real_diff = match.goals_H - match.goals_A

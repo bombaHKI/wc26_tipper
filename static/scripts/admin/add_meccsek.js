@@ -28,6 +28,9 @@ async function sendPostRequest(body) {
 async function updateMatches() {
     sendPostRequest({action: "update-matches"});
 }
+async function updateAllPoints() {
+    sendPostRequest({action: "update-all-points"});
+}
 
 function inputChanged(ev) {
     const parent = ev.currentTarget.parentElement;

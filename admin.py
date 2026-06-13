@@ -7,7 +7,7 @@ from functools import wraps
 from secrets import token_urlsafe
 from datetime import datetime, timezone
 import db
-from odds import update_matches, convert_odds
+from odds import update_matches, convert_odds, update_all_points
 from sema import User, Bet, Follow, Match
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -93,6 +93,22 @@ def meccsek():
             update_matches()
             return {
                 "response": "Meccsek frissítése sikeres!",
+                "type": "message"
+            }
+
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+
+            return {
+                "response": f"Valami hiba történt: {str(e)}",
+                "type": "error"
+            }
+    elif data["action"] == "update-all-points":
+        try:
+            update_all_points()
+            return {
+                "response": "Pontok frissítése sikeres!",
                 "type": "message"
             }
 
