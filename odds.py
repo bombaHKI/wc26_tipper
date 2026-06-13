@@ -84,16 +84,20 @@ def update_matches():
         score_key = "fullTime" if score.get("duration") == "REGULAR" else "regularTime"
         score_data = score.get(score_key) or {}
 
-        home = score_data.get("home")
-        away = score_data.get("away")
+        goals_H = score_data.get("home")
+        goals_A = score_data.get("away")
 
-        was_unscored = match.goals_H is None or match.goals_A is None
+        do_recalc_points = (
+            None in (match.goals_H, match.goals_A)
+            or goals_H != match.goals_H
+            or goals_A != match.goals_A
+        )
 
-        if home is not None and away is not None:
-            match.goals_H = home
-            match.goals_A = away
+        if None not in (goals_H,goals_A):
+            match.goals_H = goals_H
+            match.goals_A = goals_A
 
-            if was_unscored:
+            if do_recalc_points:
                 update_match_points(match)
 
 
