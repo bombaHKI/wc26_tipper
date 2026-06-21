@@ -61,6 +61,9 @@ def update_matches():
     matches = data.get("matches", [])
 
     for match_data in matches:
+        status = match_data.get("status")
+        if status != "FINISHED":
+            continue
 
         home_team = match_data.get("homeTeam", {}).get("id")
         away_team = match_data.get("awayTeam", {}).get("id")
