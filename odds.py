@@ -65,7 +65,7 @@ def update_matches():
         start_date = datetime.fromisoformat(
             match_data["utcDate"].replace("Z", "+00:00")
         )
-        # Skip if match has started but is not finished
+        
         if start_date < datetime.now(start_date.tzinfo) and status != "FINISHED":
             continue
 
@@ -80,9 +80,7 @@ def update_matches():
         if match is None:
             match = Match(
                 match_id=match_data["id"],
-                start_date=datetime.fromisoformat(
-                    match_data["utcDate"].replace("Z", "+00:00")
-                ),
+                start_date=start_date,
                 team_H_id=home_team,
                 team_A_id=away_team,
                 odds_H=1,
@@ -94,9 +92,7 @@ def update_matches():
         else:
             match.team_H_id = home_team
             match.team_A_id = away_team
-            match.start_date = datetime.fromisoformat(
-                match_data["utcDate"].replace("Z", "+00:00")
-            )
+            match.start_date = start_date
             
         score = match_data.get("score", {})
         score_key = "fullTime" if score.get("duration") == "REGULAR" else "regularTime"
