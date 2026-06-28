@@ -62,7 +62,11 @@ def update_matches():
 
     for match_data in matches:
         status = match_data.get("status")
-        if status != "FINISHED":
+        start_date = datetime.fromisoformat(
+            match_data["utcDate"].replace("Z", "+00:00")
+        )
+        # Skip if match has started but is not finished
+        if start_date < datetime.now(start_date.tzinfo) and status != "FINISHED":
             continue
 
         home_team = match_data.get("homeTeam", {}).get("id")
