@@ -97,15 +97,12 @@ class Bet(Base):
     def __repr__(self):
         return f'<B n:{self.user.name}; m:{self.match.match_id}>'
     def info_dict(self):
-        if self.match.goals_A is not None:
-            return {"match_id": self.match_id,
-                    "bet_H": self.bet_H,
-                    "bet_A": self.bet_A,
-                    "points": self.points}
-        else:
-            return {"match_id": self.match_id,
-                    "bet_H": self.bet_H,
-                    "bet_A": self.bet_A}    
+        return {
+            "match_id": self.match_id,
+            "bet_H": self.bet_H,
+            "bet_A": self.bet_A,
+            "points": self.points if self.match.goals_A is not None else 0,
+        }
 
     def update_points(self):
         self.points = points(self.bet_H, self.bet_A, self.match)
